@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: taskmanager-backend
+    env: java
+    buildCommand: "./mvnw clean package"
+    startCommand: "java -jar target/*.jar"
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://localhost:5432/taskdb
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: Dec@2024
+      - key: JWT_SECRET
+        value: your-very-strong-secret-key-at-least-32-bytes-long!
