@@ -2,9 +2,8 @@
 services:
   - type: web
     name: taskmanager-backend
-    env: docker
-    buildCommand: "docker build -t taskmanager-backend ."
-    startCommand: "docker run -p 8080:8080 taskmanager-backend"
+    runtime: docker
+    buildCommand: "mvn clean package"
     envVars:
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://localhost:5432/taskdb
