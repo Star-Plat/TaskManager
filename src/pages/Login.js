@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth';
 
 import styled from 'styled-components';
-import styles from './Login.Module.css';
+import styles from './Register.module.css'; // Reuse the same CSS module as Register
 
 const Container = styled.div`
   max-width: 400px;
   margin: 4rem auto;
   padding: 2.5rem;
   border-radius: 12px;
-  background: linear-gradient(135deg, #f0f4ff, #dfe9f3);
+  background: linear-gradient(135deg, #fdfbfb, #ebedee); // Same as Register
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 `;
 
@@ -53,7 +53,12 @@ const Login = () => {
       <Title>Login</Title>
       <Form onSubmit={handleSubmit}>
         <input
-          className={styles.input} name="username" onChange={handleChange} placeholder="Username" required/>
+          className={styles.input}
+          name="username"
+          onChange={handleChange}
+          placeholder="Username"
+          required
+        />
         <input
           className={styles.input}
           name="password"
@@ -63,7 +68,6 @@ const Login = () => {
           required
         />
         <button className={styles.button} type="submit">Login</button>
-
       </Form>
     </Container>
   );
