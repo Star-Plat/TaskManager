@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+console.log('API base URL:', process.env.REACT_APP_API_BASE_URL);
+
 const API = axios.create({
-  baseURL: 'http://localhost:8080/tasks',
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 API.interceptors.request.use((config) => {
