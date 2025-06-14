@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import styles from './Register.module.css';
 import { useNavigate } from 'react-router-dom';
-import request from '../services/api'; // 👈 Import centralized API request
+import request from '../services/api';
 
 const Container = styled.div`
   max-width: 400px;

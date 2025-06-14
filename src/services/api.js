@@ -1,9 +1,13 @@
-// src/services/api.js
+const baseURL = process.env.REACT_APP_API_BASE_URL;
 
-const API_URL = process.env.REACT_APP_API_BASE_URL;
+const request = async (url, method = 'GET', data = null) => {
+  if (!baseURL) {
+    throw new Error('API base URL is not configured. Check your .env file.');
+  }
 
-const request = async (endpoint, method = 'GET', data = null) => {
-  const config = {
+  const fullUrl = `${baseURL}${url}`;
+
+  const options = {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -11,17 +15,61 @@ const request = async (endpoint, method = 'GET', data = null) => {
   };
 
   if (data) {
-    config.body = JSON.stringify(data);
+    options.body = JSON.stringify(data);
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, config);
+  const response = await fetch(fullUrl, options);
+  const contentType = response.headers.get('content-type');
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'API request failed');
+    const errorText = await response.text();
+    throw new Error(errorText || `API request failed with status ${response.status}`);
   }
 
-  return await response.json();
+if (contentType && contentType.includes('application/json')) {
+    return await response.json();
+  } else {
+    return await response.text();
+  }
+};
+export default request;
+
+/*const baseURL = process.env.REACT_APP_API_BASE_URL;
+
+const request = async (url, method = 'GET', data = null) => {
+  if (!baseURL) {
+    throw new Error('API base URL is not configured. Check your .env file.');
+  }
+
+  const fullUrl = `${baseURL}${url}`;
+
+  const options = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+
+  const response = await fetch(fullUrl, options);
+
+  const contentType = response.headers.get('content-type');
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || `API request failed with status ${response.status}`);
+  }
+
+  // Handle JSON or plain text response
+  if (contentType && contentType.includes('application/json')) {
+    return await response.json();
+  } else {
+    return await response.text();
+  }
 };
 
 export default request;
+*/
