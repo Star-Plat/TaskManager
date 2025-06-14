@@ -12,7 +12,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-export const getTasks = () => API.get('/allTasks');
-export const createTask = (task) => API.post('/newTask', task);
-export const updateTask = (id, task) => API.put(`/${id}`, task);
-export const deleteTask = (id) => API.delete(`/${id}`);
+export const getTasks = () => API.get('tasks/allTasks');
+export const createTask = (task) => API.post('tasks/newTask', task);
+export const updateTask = (id, task) => API.put(`tasks/${id}`, task);
+export const deleteTask = (id) => API.delete(`tasks/${id}`);
