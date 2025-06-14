@@ -60,15 +60,6 @@ const Register = () => {
         />
         <input
           className={styles.input}
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-          required
-        />
-        <input
-          className={styles.input}
           name="password"
           type="password"
           value={form.password}
