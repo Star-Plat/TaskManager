@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { register } from '../api/auth';
-
 import styled from 'styled-components';
 import styles from './Register.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -28,46 +27,71 @@ const Form = styled.form`
 `;
 
 const Register = () => {
-  const [form, setForm] = useState({ username: '', email: '', password: '' });
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await register(form);
+      await register(form); // calls ../api/auth.js
       alert('Registration successful!');
-      navigate('/login')
+      navigate('/login');
     } catch (err) {
-      alert('Registration failed.');
+      alert(err.message || 'Registration failed.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Container>
-      <Title>Register</Title>
+      <Title>Create an Account</Title>
       <Form onSubmit={handleSubmit}>
         <input
           className={styles.input}
+          type="text"
           name="username"
-          onChange={handleChange}
           placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
           required
         />
-
         <input
           className={styles.input}
-          name="password"
-          type="password"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
           onChange={handleChange}
-          placeholder="Password"
           required
         />
-        <button className={styles.button} type="submit">Register</button>
+        <input
+          className={styles.input}
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+        <button
+          className={styles.button}
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? 'Registering...' : 'Register'}
+        </button>
       </Form>
     </Container>
   );
