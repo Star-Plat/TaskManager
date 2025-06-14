@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { register } from '../api/auth';
 import styled from 'styled-components';
 import styles from './Register.module.css';
 import { useNavigate } from 'react-router-dom';
+import request from '../services/api'; // 👈 Import centralized API request
 
 const Container = styled.div`
   max-width: 400px;
@@ -27,13 +27,7 @@ const Form = styled.form`
 `;
 
 const Register = () => {
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
-
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -42,56 +36,47 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      await register(form); // calls ../api/auth.js
+      await request('/auth/register', 'POST', form); // 👈 Using centralized request()
       alert('Registration successful!');
       navigate('/login');
     } catch (err) {
-      alert(err.message || 'Registration failed.');
-    } finally {
-      setLoading(false);
+      console.error('Registration error:', err);
+      alert('Registration failed. ' + err.message);
     }
   };
 
   return (
     <Container>
-      <Title>Create an Account</Title>
+      <Title>Register</Title>
       <Form onSubmit={handleSubmit}>
         <input
           className={styles.input}
-          type="text"
           name="username"
-          placeholder="Username"
           value={form.username}
           onChange={handleChange}
+          placeholder="Username"
           required
         />
         <input
           className={styles.input}
-          type="email"
           name="email"
-          placeholder="Email"
+          type="email"
           value={form.email}
           onChange={handleChange}
+          placeholder="Email"
           required
         />
         <input
           className={styles.input}
-          type="password"
           name="password"
-          placeholder="Password"
+          type="password"
           value={form.password}
           onChange={handleChange}
+          placeholder="Password"
           required
         />
-        <button
-          className={styles.button}
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Registering...' : 'Register'}
-        </button>
+        <button className={styles.button} type="submit">Register</button>
       </Form>
     </Container>
   );
